@@ -16,7 +16,7 @@ export default function CreateSchool({ onCreate }){
       {!open ? (
         <button className="w-full rounded-xl bg-black px-3 py-2 text-white" onClick={()=>setOpen(true)}>+ New School</button>
       ) : (
-        <form onSubmit={submit} className="grid grid-cols-2 gap-3">
+        <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="col-span-2">
             <label className="text-sm">School Name</label>
             <input required className="mt-1 w-full rounded-xl border p-2" value={form.name} onChange={(e)=>setForm({...form, name:e.target.value})} />
@@ -37,7 +37,7 @@ export default function CreateSchool({ onCreate }){
             <label className="text-sm">Pincode</label>
             <input className="mt-1 w-full rounded-xl border p-2" value={form.pincode} onChange={(e)=>setForm({...form, pincode:e.target.value})} />
           </div>
-          <div className="col-span-2 flex justify-end"><button className="rounded-xl bg-black px-4 py-2 text-white">Save</button></div>
+          <div className="md:col-span-2 flex justify-end"><button className="w-full md:w-auto rounded-xl bg-black px-4 py-2 text-white">Save</button></div>
         </form>
       )}
     </div>

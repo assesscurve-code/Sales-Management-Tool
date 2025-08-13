@@ -7,7 +7,7 @@ export default function SchoolList({ schools, onSelect, selectedId }){
     <div className="rounded-2xl border p-4">
       <div className="mb-2 flex items-center justify-between">
         <div className="text-sm font-semibold">Select Existing School</div>
-        <input placeholder="Search…" className="w-40 rounded-xl border p-2 text-sm" value={q} onChange={(e)=>setQ(e.target.value)} />
+        <input placeholder="Search…" className="w-full sm:w-40 rounded-xl border p-2 text-sm" value={q} onChange={(e)=>setQ(e.target.value)} />
       </div>
       <div className="max-h-80 space-y-2 overflow-auto">
         {filtered.map(s => (

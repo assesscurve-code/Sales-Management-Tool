@@ -4,3 +4,13 @@
 
 html, body, #root { height: 100%; }
 body { background: #fff; }
+
+/* iOS notch safe area */
+@supports (padding: max(0px)) {
+  .safe-top { padding-top: max(env(safe-area-inset-top), 0px); }
+}
+
+/* Utility: tighter spacing on tiny screens */
+@media (max-width: 360px) {
+  .tiny\:p-2 { padding: .5rem !important; }
+}

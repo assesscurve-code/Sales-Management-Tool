@@ -7,7 +7,7 @@ export default function FollowUpForm({ onAdd }){
   return (
     <form onSubmit={submit}>
       <div className="mb-2 text-sm font-semibold">Schedule Follow-up</div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <label className="text-sm">Follow-up Date</label>
           <input type="date" className="mt-1 w-full rounded-xl border p-2" value={due} onChange={(e)=>setDue(e.target.value)} />
@@ -17,7 +17,7 @@ export default function FollowUpForm({ onAdd }){
           <textarea rows={3} className="mt-1 w-full rounded-xl border p-2" value={remark} onChange={(e)=>setRemark(e.target.value)} />
         </div>
       </div>
-      <div className="mt-3 flex justify-end"><button className="rounded-xl bg-black px-4 py-2 text-white">Add Follow-up</button></div>
+      <div className="mt-3 flex justify-end"><button className="w-full md:w-auto rounded-xl bg-black px-4 py-2 text-white">Add Follow-up</button></div>
     </form>
   )
 }

@@ -189,11 +189,11 @@ export default function AdminHome(){
 
       {/* Activities (table) with filters; search bar unchanged on the right */}
       <div className="rounded-2xl border p-4">
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm font-semibold">All Employees – Activities</div>
           <input
             placeholder="Search by school/sales/remark…"
-            className="w-80 rounded-xl border p-2"
+            className="w-full sm:w-80 rounded-xl border p-2"
             value={q}
             onChange={(e)=>setQ(e.target.value)}
           />
@@ -218,7 +218,7 @@ export default function AdminHome(){
         <VisitsTable visits={visitsFiltered} schools={schools} usersMap={profilesMap} />
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard title="Total Schools" value={schools.length} />
         <StatCard title="Total Activities" value={visits.length} />
         <StatCard title="Overdue Follow-ups" value={filteredAlerts.filter(a=>a.type==='overdue').length} />

@@ -60,8 +60,8 @@ export default function SchoolDetail({ school, visitsForSchool = [], followupsFo
               <input type="email" className="mt-1 w-full rounded-xl border p-2" value={form.pocEmail} onChange={(e)=>setForm({...form, pocEmail:e.target.value})} />
             </div>
           </div>
-          <div className="mt-4 flex justify-end gap-2">
-            <button className="rounded-xl bg-black px-4 py-2 text-white">Save Details</button>
+          <div className="mt-4 flex justify-end">
+            <button className="w-full md:w-auto rounded-xl bg-black px-4 py-2 text-white">Save Details</button>
           </div>
         </form>
 
@@ -124,7 +124,7 @@ function VisitForm({ onAdd }){
   return (
     <form onSubmit={submit}>
       <div className="mb-2 text-sm font-semibold">Add Meeting / Visit</div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
           <label className="text-sm">Meeting Date</label>
           <input type="date" className="mt-1 w-full rounded-xl border p-2" value={visit.date} onChange={(e)=>setVisit({...visit, date:e.target.value})} />
@@ -135,7 +135,7 @@ function VisitForm({ onAdd }){
         </div>
       </div>
       <div className="mt-3 flex justify-end gap-2">
-        <button className="rounded-xl bg-black px-4 py-2 text-white">Save Visit</button>
+        <button className="w-full md:w-auto rounded-xl bg-black px-4 py-2 text-white">Save Visit</button>
       </div>
     </form>
   )

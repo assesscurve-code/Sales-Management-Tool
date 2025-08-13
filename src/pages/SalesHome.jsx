@@ -116,8 +116,8 @@ export default function SalesHome(){
       {tab === 'schools' && (
         <>
           <div className="min-h-[50vh]">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="md:col-span-1">
                 <CreateSchool onCreate={async (payload) => {
                   const insert = { ...payload, created_by: userId }
                   const { data, error } = await supabase
@@ -131,7 +131,7 @@ export default function SalesHome(){
                   return data?.id
                 }} />
               </div>
-              <div className="col-span-2">
+              <div className="md:col-span-2">
                 {selected ? (
                   <SchoolDetail
                     key={selected.id}
