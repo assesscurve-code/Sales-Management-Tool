@@ -115,7 +115,12 @@ export default function SchoolDetail({ school, visitsForSchool = [], followupsFo
 function VisitForm({ onAdd }){
   const [visit, setVisit] = useState({ date: new Date().toISOString().slice(0,10), remark: '' })
   const clear = () => setVisit({ date: new Date().toISOString().slice(0,10), remark: '' })
-  const submit = async (e) => { e.preventDefault(); await onAdd({ date: visit.date, remark: visit.remark }); clear(); alert('Visit saved') }
+  const submit = async (e) => {
+  e.preventDefault();
+  await onAdd({ date: visit.date, remark: visit.remark });
+  // alert('Visit saved');                     // show message first
+  setVisit(v => ({ ...v, remark: '' }));    // then blank just the remark
+  };
   return (
     <form onSubmit={submit}>
       <div className="mb-2 text-sm font-semibold">Add Meeting / Visit</div>
