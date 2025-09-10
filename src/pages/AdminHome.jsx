@@ -20,6 +20,10 @@ export default function AdminHome(){
   const [visits, setVisits] = useState([])
   const [followups, setFollowups] = useState([])
   const [profiles, setProfiles] = useState([])
+  const [detailSchool, setDetailSchool] = useState(null)
+  // const openSchool = (id) => {const s = schools.find(x => String(x.id) === String(id)) setDetailSchool(s || null)}
+  const openSchool  = (id) => setDetailSchool(schools.find(x => String(x.id) === String(id)) || null)
+  const closeSchool = () => setDetailSchool(null)
 
   // search bar (unchanged)
   const [q, setQ] = useState('')
@@ -262,7 +266,7 @@ export default function AdminHome(){
           }}>Reset Table Filters</button>
         </div>
 
-        <VisitsTable visits={visitsFiltered} schools={schools} usersMap={profilesMap} />
+        <VisitsTable visits={visitsFiltered} schools={schools} usersMap={profilesMap} onClickSchool={openSchool}/>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -270,6 +274,48 @@ export default function AdminHome(){
         <StatCard title="Total Activities" value={filteredStats.totalActivities} />
         <StatCard title="Overdue Follow-ups" value={filteredStats.overdueFollowups} />
       </div>
+      {detailSchool && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/30" onClick={closeSchool}>
+          <div className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="mb-3 flex items-center justify-between">
+              <div className="text-lg font-semibold">{detailSchool.name}</div>
+              <button className="rounded-lg border px-2 py-1 text-sm" onClick={closeSchool}>Close</button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="col-span-2 font-medium">Address</div>
+              <div className="col-span-2">{detailSchool.address || '—'}</div>
+              <div>City</div><div>{detailSchool.city || '—'}</div>
+              <div>State</div><div>{detailSchool.state || '—'}</div>
+              <div>Pincode</div><div>{detailSchool.pincode || '—'}</div>
+
+              <div className="col-span-2 mt-2 font-medium">Owner</div>
+              <div>Name</div><div>{detailSchool.owner_name || '—'}</div>
+              <div>Phone</div><div>{detailSchool.owner_phone || '—'}</div>
+              <div>Email</div><div>{detailSchool.owner_email || '—'}</div>
+
+              <div className="col-span-2 mt-2 font-medium">Point of Contact</div>
+              <div>Name</div><div>{detailSchool.poc_name || '—'}</div>
+              <div>Phone</div><div>{detailSchool.poc_phone || '—'}</div>
+              <div>Email</div><div>{detailSchool.poc_email || '—'}</div>
+
+              {detailSchool.status && (
+                <>
+                  <div>Status</div><div>{String(detailSchool.status).toUpperCase()}</div>
+                  {detailSchool.status === 'cold' && (
+                    <>
+                      <div>Cold Reason</div><div>{detailSchool.cold_reason || '—'}</div>
+                    </>
+                  )}
+                </>
+              )}
+
+              <div>Created At</div>
+              <div>{detailSchool.created_at ? new Date(detailSchool.created_at).toLocaleString() : '—'}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function VisitsTable({ visits, schools, usersMap }){
+export default function VisitsTable({ visits, schools, usersMap, onClickSchool }){
   const schoolById = (id) => schools.find(s => s.id === id) || { name: '—' }
   const fmt = (x) => (typeof x === 'number' ? x.toFixed(4) : null)
 
@@ -23,7 +23,8 @@ export default function VisitsTable({ visits, schools, usersMap }){
             return (
               <tr key={v.id} className="border-t">
                 <td className="p-2 sm:p-3">{v.date}</td>
-                <td className="p-2 sm:p-3">{schoolById(v.school_id).name}</td>
+                {/* <td className="p-2 sm:p-3">{schoolById(v.school_id).name}</td> */}
+                <td className="p-2 sm:p-3">{onClickSchool ? <button type="button" className="text-blue-600 hover:underline" onClick={() => onClickSchool(v.school_id)}>{schoolById(v.school_id).name}</button> : schoolById(v.school_id).name}</td>
                 <td className="p-2 sm:p-3">{usersMap[v.user_id]?.name || '—'}</td>
                 <td className="p-2 sm:p-3">{v.remark || '—'}</td>
                 <td className="p-2 sm:p-3 text-gray-600">
