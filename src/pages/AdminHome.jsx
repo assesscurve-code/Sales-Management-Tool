@@ -34,6 +34,7 @@ export default function AdminHome(){
   const [alertSchool, setAlertSchool]   = useState('all')
   const [alertSales,  setAlertSales]    = useState('all')
   const [alertDayBand, setAlertDayBand] = useState('all')
+  const [alertLimit, setAlertLimit] = useState(10)
 
   useEffect(() => {
     (async () => {
@@ -141,6 +142,11 @@ export default function AdminHome(){
     })
   }, [rawAlerts, alertSchool, alertSales, alertDayBand])
 
+  const alertsPage = useMemo(
+      () => filteredAlerts.slice(0, Number(alertLimit || 10)),
+      [filteredAlerts, alertLimit]
+    )
+
   // ---------- Activities table filtering ----------
   const visitsFiltered = useMemo(() => {
     const base = (visits || []).filter(v => {
@@ -164,7 +170,7 @@ export default function AdminHome(){
       {/* Admin Alerts with filters */}
       <div className="rounded-2xl border p-4">
         <div className="mb-2 text-sm font-semibold">Admin Alerts</div>
-        <div className="mb-3 grid grid-cols-4 gap-3">
+        <div className="mb-3 grid grid-cols-5 gap-3">
           <select className="rounded-xl border p-2 text-sm" value={alertSchool} onChange={e=>setAlertSchool(e.target.value || 'all')}>
             <option value="all">All Schools</option>
             {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -180,11 +186,20 @@ export default function AdminHome(){
             <option value="8-10">8–10 days</option>
             <option value="11+">11+ days</option>
           </select>
+          <select className="rounded-xl border p-2 text-sm" value={alertLimit} onChange={(e)=>setAlertLimit(e.target.value)}>
+            <option value={10}>Show 10</option>
+            <option value={50}>Show 50</option>
+            <option value={100}>Show 100</option>
+            <option value={1000}>Show 1000</option>
+          </select>
+
           <button className="rounded-xl border p-2 text-sm" onClick={()=>{
-            setAlertSchool('all'); setAlertSales('all'); setAlertDayBand('all')
+            setAlertSchool('all'); setAlertSales('all'); setAlertDayBand('all'); setAlertLimit(10)
           }}>Reset Alerts Filters</button>
         </div>
-        <Notice title="Admin Alerts" items={filteredAlerts} emptyText="No alerts" />
+        {/* <Notice title="Admin Alerts" items={filteredAlerts} emptyText="No alerts" /> */}
+        <Notice title="Admin Alerts" items={alertsPage} emptyText="No alerts" />
+
       </div>
 
       {/* Activities (table) with filters; search bar unchanged on the right */}
