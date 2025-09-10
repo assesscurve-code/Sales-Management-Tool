@@ -83,6 +83,8 @@ export default function AdminHome(){
 
   const today = new Date()
   const d0 = d => new Date(new Date(d).toDateString())
+  // const d1 = (d) => new Date(new Date(d).toDateString())
+
   const daysBetween = (a, b) => Math.round((d0(b) - d0(a)) / 86400000)
   const maxDate = arr => (arr && arr.length ? arr.reduce((m,x)=> new Date(x) > new Date(m) ? x : m) : null)
 
@@ -165,6 +167,36 @@ export default function AdminHome(){
     })
   }, [visits, schools, profilesMap, schoolFilter, salesFilter, fromDate, toDate, q])
 
+  // NEW: stats that reflect the Activities filters
+  const filteredStats = useMemo(() => {
+    // total activities = filtered visits count
+    const totalActivities = visitsFiltered.length
+
+    // total schools = unique schools present in filtered visits
+    const totalSchools = new Set(visitsFiltered.map(v => sid(v.school_id))).size
+
+    // overdue follow-ups according to the SAME Activities filters
+    const today = d0(new Date())
+    const matchesSchool = (f) => (schoolFilter === 'all' || sid(f.school_id) === sid(schoolFilter))
+    const matchesSales  = (f) => (salesFilter  === 'all' || sid(f.user_id)   === sid(salesFilter))
+    const matchesDate   = (f) => {
+      // apply Activities date range to follow-up due_date (optional but useful)
+      if (fromDate && new Date(f.due_date) < new Date(`${fromDate}T00:00:00`)) return false
+      if (toDate   && new Date(f.due_date) > new Date(`${toDate}T23:59:59`))   return false
+      return true
+    }
+
+    const overdueFollowups = (followups || []).filter(f =>
+      f.status === 'pending' &&
+      d0(f.due_date) < today &&
+      matchesSchool(f) &&
+      matchesSales(f) &&
+      matchesDate(f)
+    ).length
+
+    return { totalSchools, totalActivities, overdueFollowups }
+  }, [visitsFiltered, followups, schoolFilter, salesFilter, fromDate, toDate])
+
   return (
     <div className="space-y-4">
       {/* Admin Alerts with filters */}
@@ -234,9 +266,9 @@ export default function AdminHome(){
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatCard title="Total Schools" value={schools.length} />
-        <StatCard title="Total Activities" value={visits.length} />
-        <StatCard title="Overdue Follow-ups" value={filteredAlerts.filter(a=>a.type==='overdue').length} />
+        <StatCard title="Total Schools" value={filteredStats.totalSchools} />
+        <StatCard title="Total Activities" value={filteredStats.totalActivities} />
+        <StatCard title="Overdue Follow-ups" value={filteredStats.overdueFollowups} />
       </div>
     </div>
   )
